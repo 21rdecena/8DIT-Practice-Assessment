@@ -18,7 +18,7 @@ class GatherData:
         self.info_lb = Label(parent, text="Collecting Person Data", bg='pink', height = 3, wraplength = 200)
         self.info_lb.grid(row=0, column=0)
 
-        self.switch_btn = Button(parent, text="Show All", command=self.switch_frames)
+        self.switch_btn = Button(parent, text="Show All", command=self.frames_switch)
         self.switch_btn.grid(row=0, column=1)
 
         # data entry frame
@@ -56,18 +56,23 @@ class GatherData:
         name_lb = Label(self.display_frame, text="First name: ")
         name_lb.grid(row=0, column=0)
         
+        output_name_lb = Label(self.display_frame, text="Placeholder ")
+        output_name_lb.grid(row=0, column=1)
+        
         age_lb = Label(self.display_frame, text="Age: ")
         age_lb.grid(row=1, column=0)
         
-        phone_lb = Label(self.display_frame, text="Do you have a mobile phone?")
-        phone_lb.grid(row=2, column=0)
+        output_age_lb = Label(self.display_frame, text="Placeholder")
+        output_age_lb.grid(row=1, column=1)
+        
+        output_phone_lb = Label(self.display_frame, text="Lorem ipsum")
+        output_phone_lb.grid(row=2, column=0, columnspan=2)
 
-        self.enter_btn = Button(self.display_frame, text="Enter Data:",  command=self.enter_data)
-        self.enter_btn.grid(row=4, column=0, columnspan=2)
+        self.enter_btn = Button(self.display_frame, text="Previous",  command=self.data_switch)
+        self.enter_btn.grid(row=3, column=0)
 
-        self.enter_btn = Button(self.display_frame, text="Enter Data:",  command=self.enter_data)
-        self.enter_btn.grid(row=4, column=0, columnspan=2)
-
+        self.enter_btn = Button(self.display_frame, text="Next",  command=self.data_switch)
+        self.enter_btn.grid(row=3, column=1)
 
 
     def enter_data(self):
@@ -80,19 +85,23 @@ class GatherData:
             print(person.age)
             print(person.has_phone)
 
-    def switch_frames(self):
+    def data_switch(self):
+        print('Data switched!')
+    
+
+    def frames_switch(self):
         if self.count == 0:
             self.data_frame.grid_forget()
             self.display_frame.grid(row=1, column=0, columnspan=2)
-            self.switch_info()
+            self. info_switch()
             self.count += 1
         else:
             self.display_frame.grid_forget()
             self.data_frame.grid(row=1, column=0, columnspan=2)
-            self.switch_info()
+            self. info_switch()
             self.count = 0
 
-    def switch_info(self):
+    def info_switch(self):
         if self.count == 0:
             self.info_lb.configure(text="Displaying Person Data")
             self.switch_btn.configure(text="Add New Person")
