@@ -8,41 +8,56 @@ class Data:
     
 class GatherData:
     def __init__(self, parent):
-        self.collect_lb = Label(parent, text="Collecting person data", bg="pink")
-        self.collect_lb.grid(row=0, column=0)
-        
-        show_all_btn = Button(parent, text="Show All", command = self.switch_frames)  # can probably configure the text here when user switches frame?
-        show_all_btn.grid(row=0, column=2)                                                         # maybe one single method to change frames??
+        self.yesno = StringVar()
+        self.yesno.set("yes")
 
-        self.collect_frame = Frame(parent)
-        self.collect_frame.grid()
+        # parent
+        info_lb = Label(parent, text="Collecting Person Data", bg='pink', height = 3, wraplength = 200)
+        info_lb.grid(row=0, column=0)
 
-        lbl1 = Label(self.collect_frame, text='first name')
-        lbl1.grid(row=1, column=0)
+        self.switch_btn = Button(parent, text="Show All", command=self.switch_frames)
+        self.switch_btn.grid(row=0, column=1)
 
-        name_entry = Entry(self.collect_frame)
-        name_entry.grid(row=1, column=2)
+        # data entry frame
+        self.data_frame = Frame(parent)
+        self.data_frame.grid(row=1, column=0, columnspan=2)
 
-        lbl2 = Label(self.collect_frame, text='age')
-        lbl2.grid(row=2, column=0)
+        name_lb = Label(self.data_frame, text="First name: ")
+        name_lb.grid(row=0, column=0)
         
-        age_entry = Entry(self.collect_frame)
-        age_entry.grid(row=2, column=2)
+        self.name_entry = Entry(self.data_frame)
+        self.name_entry.grid(row=0, column=1)
 
-        lbl3 = Label(self.collect_frame, text='do u have  amobile phone')
-        lbl3.grid(row=3, column=0)
+        age_lb = Label(self.data_frame, text="Age: ")
+        age_lb.grid(row=1, column=0)
         
-        
-        
+        self.age_entry = Entry(self.data_frame)
+        self.age_entry.grid(row=1, column=1)
 
+        phone_lb = Label(self.data_frame, text="Do you have a mobile phone?")
+        phone_lb.grid(row=2, column=0)
+
+        self.yes_rb = Radiobutton(self.data_frame, text="Yes", variable = self.yesno, value = "yes")
+        self.yes_rb.grid(row=2, column=1)
         
+        self.no_rb = Radiobutton(self.data_frame, text="No", variable = self.yesno, value = "no")
+        self.no_rb.grid(row=3, column=1)
+
+        self.enter_btn = Button(self.data_frame, text="Enter Data:",  command=self.enter_data)
+        self.enter_btn.grid(row=4, column=0, columnspan=2)
+
+        # displaying data
+
+    def enter_data(self):
+        print("Data entered!")
+    
     def switch_frames(self):
-        pass
+        print("Frames switched")
 
 if __name__ == "__main__":
     root = Tk()
     root.title("Gather Data")
-    root.configure(bg = "pink")
     app = GatherData(root)
+    root.configure(bg='pink')
     root.mainloop()
 
