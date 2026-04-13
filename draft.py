@@ -11,7 +11,8 @@ class GatherData:
         self.yesno_var = StringVar()
         self.yesno_var.set("yes")
 
-        self.count = 0
+        self.frame_count = 0
+        self.person_index = 0
         self.person_data = []
 
         # parent
@@ -56,23 +57,23 @@ class GatherData:
         name_lb = Label(self.display_frame, text="First name: ")
         name_lb.grid(row=0, column=0)
         
-        output_name_lb = Label(self.display_frame, text="Placeholder ")
-        output_name_lb.grid(row=0, column=1)
+        self.output_name = Label(self.display_frame, text="Placeholder")
+        self.output_name.grid(row=0, column=1)
         
         age_lb = Label(self.display_frame, text="Age: ")
         age_lb.grid(row=1, column=0)
         
-        output_age_lb = Label(self.display_frame, text="Placeholder")
-        output_age_lb.grid(row=1, column=1)
+        self.output_age = Label(self.display_frame, text="Placeholder")
+        self.output_age.grid(row=1, column=1)
         
-        output_phone_lb = Label(self.display_frame, text="Lorem ipsum")
-        output_phone_lb.grid(row=2, column=0, columnspan=2)
+        self.output_phone = Label(self.display_frame, text="Lorem ipsum")
+        self.output_phone.grid(row=2, column=0, columnspan=2)
 
-        self.enter_btn = Button(self.display_frame, text="Previous",  command=self.data_switch)
-        self.enter_btn.grid(row=3, column=0)
+        self.prev_btn = Button(self.display_frame, text="Previous",  command=lambda: self.switch_person(-1))
+        self.prev_btn.grid(row=3, column=0)
 
-        self.enter_btn = Button(self.display_frame, text="Next",  command=self.data_switch)
-        self.enter_btn.grid(row=3, column=1)
+        self.next_btn = Button(self.display_frame, text="Next",  command=lambda: self.switch_person(1))
+        self.next_btn.grid(row=3, column=1)
 
 
     def enter_data(self):
@@ -80,35 +81,42 @@ class GatherData:
         user_age = self.age_entry.get()
         user_phone = self.yesno_var.get()
         self.person_data.append(Person(user_first, user_age, user_phone))
-        for person in self.person_data: #placeholder, test if code is working
-            print(person.name)     
-            print(person.age)
-            print(person.has_phone)
 
-    def data_switch(self):
-        print('Data switched!')
-    
+
+    def switch_person(self, amount):
+        self.person_index += amount
+        self.update_labels()
 
     def frames_switch(self):
-        if self.count == 0:
+        if self.frame_count == 0:
             self.data_frame.grid_forget()
             self.display_frame.grid(row=1, column=0, columnspan=2)
-            self. info_switch()
-            self.count += 1
+            self.info_switch()
+            self.frame_count += 1
         else:
             self.display_frame.grid_forget()
             self.data_frame.grid(row=1, column=0, columnspan=2)
-            self. info_switch()
-            self.count = 0
+            self.info_switch()
+            self.frame_count = 0
 
     def info_switch(self):
-        if self.count == 0:
+        if self.frame_count == 0:
             self.info_lb.configure(text="Displaying Person Data")
             self.switch_btn.configure(text="Add New Person")
+            self.update_labels()
         else:
             self.info_lb.configure(text="Collecting Person Data")
             self.switch_btn.configure(text="Show All")
             
+    def update_labels(self):
+        person = self.person_data[self.person_index]
+        self.output_name.configure(text=f'{person.name}')
+        self.output_age.configure(text=f'{person.age}')
+        if person.has_phone == "yes":
+            self.output_phone.configure(text=f'{person.name} has a mobile phone')
+        else:
+            self.output_phone.configure(text=f"{person.name} doesn't have a mobile phone")
+
 if __name__ == "__main__":
     root = Tk()
     root.title("Gather Data")
